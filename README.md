@@ -8,4 +8,4 @@ You can also enable or disable the snap feature. Makes it snap to the nearest po
 
 Note: Right now, the UIImageView is aligned with the Superview, not Safe Area, because this way it feels more like a navigation bar. You can easily change that on the storyboard constraints.
 
-![Alt Text]https://media.giphy.com/media/1Ql2xtdX2vJIDDAvrP/giphy.gif
+![Alt Text](https://media.giphy.com/media/1Ql2xtdX2vJIDDAvrP/giphy.gif)
