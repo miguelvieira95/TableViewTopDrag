@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var tableView: UITableView!
     var imageHeight : CGFloat = 170;
     let originalImageHeight : CGFloat = 170;
-    let minimumImageHeight : CGFloat = 70;
+    let minimumImageHeight : CGFloat = 60;
     var imageHeightConstraint : NSLayoutConstraint?;
     var oldScrollValue : CGFloat = 0;
     
@@ -50,7 +50,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let tableViewTotalHeight = tableView.contentSize.height - tableView.frame.size.height;
 
-        if (yOffset < 0 || yOffset > tableViewTotalHeight) { return }
+        if (yOffset < 0 || yOffset > tableViewTotalHeight)
+        {
+            if (yOffset < 0) //if the user drags below the content offset (bounce animation) we want to expand the top View
+            {
+                SnapToPlace(specificPlace: originalImageHeight)
+            }
+            return
+        }
 
         imageHeight += difference;
         
@@ -63,12 +70,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             imageHeight = originalImageHeight;
         }
 
-        self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.2) {
-            self.imageHeightConstraint?.constant = self.imageHeight;
-            self.view.layoutIfNeeded()
-        }
+        self.imageHeightConstraint?.constant = self.imageHeight;
         
         oldScrollValue = yOffset;
     }
@@ -78,9 +80,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         SnapToPlace()
     }
     
-    func SnapToPlace()
+    func SnapToPlace(specificPlace : CGFloat? = nil)
     {
-        if (imageHeight < originalImageHeight/1.3)
+        if (specificPlace != nil)
+        {
+            imageHeight = specificPlace!;
+        }
+        else if (imageHeight < originalImageHeight/1.3)
         {
             imageHeight = minimumImageHeight;
         }
